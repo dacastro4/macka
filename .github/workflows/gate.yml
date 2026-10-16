@@ -2,8 +2,8 @@ name: m0-gate
 
 # M0 gate (core-video-stack spec): a clean Debian 12 VM reaches a fully wired
 # stack and a second run changes nothing. Runs the same script as `make gate`.
-# TODO(verify): not yet run on GitHub-hosted runners; it needs KVM on the
-# runner for Lima's QEMU backend.
+# Needs KVM on the runner for Lima's QEMU backend; first passed on
+# ubuntu-latest (amd64) on 2026-10-16, run 38830539982.
 
 on:
   push:

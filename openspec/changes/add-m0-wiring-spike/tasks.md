@@ -45,5 +45,5 @@
 ## 7. Gate (M0)
 
 - [x] 7.1 Contract tests against real pinned containers (CC-3)
-- [ ] 7.2 CI job: clean Debian 12 VM, `macka apply` twice; assert all links connected, then all `already-satisfied`, no container recreated (`TestP4_SecondRunNoop`)
+- [x] 7.2 CI job: clean Debian 12 VM, `macka apply` twice; assert all links connected, then all `already-satisfied`, no container recreated (`TestP4_SecondRunNoop`)
 - [x] 7.3 Record gate result and any new open questions in the requirements doc
