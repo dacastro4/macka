@@ -1,0 +1,13 @@
+# Example HLI stack for M0 (core video stack). Copy next to where the stack
+# should live, then run: hli apply -f stack.yml
+version: 1
+project: hli
+timezone: Etc/UTC
+# Loopback or a private LAN IP. Never 0.0.0.0 (X-3).
+bindAddress: 127.0.0.1
+paths:
+  # Shared data root; media lands in media/movies and media/tv (S-1).
+  data: ./data
+# Optional: containers run as the owner of this directory unless set.
+# user: {uid: 1000, gid: 1000}
+apps: [prowlarr, radarr, sonarr, jellyfin]

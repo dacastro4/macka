@@ -1,0 +1,8 @@
+/bin/
+/dist/
+*.test
+coverage.out
+# generated stacks and secrets from local runs
+/run/
+.env
+test/gate/last-run.log

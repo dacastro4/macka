@@ -1,0 +1,41 @@
+name: m0-gate
+
+# M0 gate (core-video-stack spec): a clean Debian 12 VM reaches a fully wired
+# stack and a second run changes nothing. Runs the same script as `make gate`.
+# TODO(verify): not yet run on GitHub-hosted runners; it needs KVM on the
+# runner for Lima's QEMU backend.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Install QEMU and Lima
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qemu-system-x86 qemu-utils
+          curl -fsSL https://github.com/lima-vm/lima/releases/download/v2.2.1/lima-2.2.1-Linux-x86_64.tar.gz | sudo tar -xz -C /usr/local
+          limactl --version
+      - name: Run gate
+        run: make gate GOARCH_LINUX=amd64
+      - name: Upload gate log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m0-gate-log
+          path: test/gate/last-run.log

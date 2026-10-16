@@ -1,0 +1,31 @@
+schema: spec-driven
+
+context: |
+  Home Library Installer (HLI, working name): free, open-source installer and
+  control panel that gives a non-technical person a complete home digital
+  library (movies, TV, music, ebooks, audiobooks) on their own PC or in a VM,
+  without opening a terminal.
+
+  Source of truth for requirements: "Home Library Installer: Requirements v0.1"
+  https://claude.ai/code/artifact/92ed6e4b-7ec4-4094-9841-0850103d0180
+  Requirement IDs (P-, S-, D-, W-, X-, C-, A-, R-, L-, T-, CC-, LC-) are cited
+  in specs, tests, commits and PRs.
+
+  Stack: Go manager (one static binary per OS/arch), embedded React +
+  TypeScript UI, generated Docker Compose project. stack.yml is the source of
+  truth.
+
+  Delivery: five milestones (M0 Spike, M1 Core library, M2 Books and remote,
+  M3 Platforms, M4 Add-ons and care), then v1.0 hardening. Never build ahead of
+  the current milestone gate.
+
+rules:
+  proposal:
+    - List the requirement IDs the change satisfies.
+    - Name the milestone the change belongs to.
+  specs:
+    - Put the source requirement ID in each requirement heading.
+    - Never state an upstream endpoint, image tag or port as fact unless it is
+      recorded in docs/COMPATIBILITY.md; otherwise mark it TODO(verify).
+  tasks:
+    - Every requirement ID gets at least one automated test whose name contains the ID.
