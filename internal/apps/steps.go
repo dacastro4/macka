@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"hli/internal/wiring"
+	"github.com/dacastro4/macka/internal/wiring"
 )
 
 // base holds the identity fields every step shares.
@@ -167,7 +167,7 @@ type NotificationStep struct {
 	Fields   map[string]any
 }
 
-// NotificationName is the name HLI gives the Jellyfin connection in each app.
+// NotificationName is the name macka gives the Jellyfin connection in each app.
 const NotificationName = "Jellyfin"
 
 // NewNotificationStep builds the link app → Jellyfin. It depends on the
@@ -267,7 +267,7 @@ func verifyByTest(ctx context.Context, app *Servarr, resource, name string) erro
 	return nil
 }
 
-// JellyfinSetupStep completes Jellyfin's first-run with the HLI admin account.
+// JellyfinSetupStep completes Jellyfin's first-run with the macka admin account.
 type JellyfinSetupStep struct {
 	base
 	J          *Jellyfin
@@ -296,7 +296,7 @@ func (s *JellyfinSetupStep) Check(ctx context.Context) (wiring.CheckResult, erro
 		return missing, nil
 	}
 	if _, err := s.J.Login(ctx); errors.Is(err, ErrBadLogin) {
-		return drifted("setup was completed outside HLI; the HLI admin password does not sign in"), nil
+		return drifted("setup was completed outside macka; the macka admin password does not sign in"), nil
 	} else if err != nil {
 		return missing, err
 	}
@@ -319,7 +319,7 @@ func (s *JellyfinSetupStep) Verify(ctx context.Context) error {
 	return err
 }
 
-// JellyfinKeyStep creates the API key HLI uses for Jellyfin.
+// JellyfinKeyStep creates the API key macka uses for Jellyfin.
 type JellyfinKeyStep struct {
 	base
 	J *Jellyfin
@@ -327,7 +327,7 @@ type JellyfinKeyStep struct {
 
 func NewJellyfinKeyStep(j *Jellyfin) *JellyfinKeyStep {
 	return &JellyfinKeyStep{
-		base: base{id: JellyfinKeyID, label: "Jellyfin API key for HLI", targets: []string{"jellyfin"}, deps: []string{JellyfinSetupID}},
+		base: base{id: JellyfinKeyID, label: "Jellyfin API key for macka", targets: []string{"jellyfin"}, deps: []string{JellyfinSetupID}},
 		J:    j,
 	}
 }

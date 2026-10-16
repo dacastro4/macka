@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"hli/internal/stack"
+	"github.com/dacastro4/macka/internal/stack"
 )
 
 func TestParseProjects(t *testing.T) {
@@ -53,24 +53,24 @@ func fakeDocker(t *testing.T, script string) (Compose, string) {
 
 func TestComposeCommands(t *testing.T) {
 	c, argsFile := fakeDocker(t, `case "$*" in
-  *" ls "*) echo '[{"Name":"hli","ConfigFiles":"/s/docker-compose.yml"}]' ;;
+  *" ls "*) echo '[{"Name":"macka","ConfigFiles":"/s/docker-compose.yml"}]' ;;
   *" ps "*) echo '{"ID":"a1","Service":"radarr","State":"running"}' ;;
 esac`)
 	ctx := context.Background()
 	ps, err := c.Projects(ctx)
-	if err != nil || len(ps) != 1 || ps[0].Name != "hli" {
+	if err != nil || len(ps) != 1 || ps[0].Name != "macka" {
 		t.Fatalf("projects %+v %v", ps, err)
 	}
-	cs, err := c.Containers(ctx, "hli")
+	cs, err := c.Containers(ctx, "macka")
 	if err != nil || len(cs) != 1 || cs[0].Service != "radarr" {
 		t.Fatalf("containers %+v %v", cs, err)
 	}
-	s := &stack.State{Dir: "/s", Project: "hli"}
+	s := &stack.State{Dir: "/s", Project: "macka"}
 	if err := c.Up(ctx, s); err != nil {
 		t.Fatal(err)
 	}
 	raw, _ := os.ReadFile(argsFile)
-	if !strings.Contains(string(raw), "compose --project-directory /s -f /s/docker-compose.yml -p hli up -d --remove-orphans --quiet-pull") {
+	if !strings.Contains(string(raw), "compose --project-directory /s -f /s/docker-compose.yml -p macka up -d --remove-orphans --quiet-pull") {
 		t.Fatalf("up args:\n%s", raw)
 	}
 }

@@ -1,4 +1,4 @@
-// Command hli is the Home Library Installer manager (M0: apply and status).
+// Command macka is the Home Library Installer manager (M0: apply and status).
 package main
 
 import (
@@ -11,12 +11,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"hli/internal/apps"
-	"hli/internal/compat"
-	"hli/internal/platform"
-	"hli/internal/redact"
-	"hli/internal/stack"
-	"hli/internal/wiring"
+	"github.com/dacastro4/macka/internal/apps"
+	"github.com/dacastro4/macka/internal/compat"
+	"github.com/dacastro4/macka/internal/platform"
+	"github.com/dacastro4/macka/internal/redact"
+	"github.com/dacastro4/macka/internal/stack"
+	"github.com/dacastro4/macka/internal/wiring"
 )
 
 // composer is the slice of Docker Compose the CLI needs.
@@ -32,7 +32,7 @@ type deps struct {
 	stderr  *redact.Writer
 }
 
-const usage = `usage: hli <command> [-f stack.yml]
+const usage = `usage: macka <command> [-f stack.yml]
 
 commands:
   apply    validate stack.yml, generate the Compose project, start it and wire every app
@@ -76,7 +76,7 @@ func run(ctx context.Context, args []string, d deps) int {
 		return 2
 	}
 	if err != nil {
-		fmt.Fprintln(d.stderr, "hli:", err)
+		fmt.Fprintln(d.stderr, "macka:", err)
 		return 1
 	}
 	return 0
@@ -132,7 +132,7 @@ func status(ctx context.Context, file string, d deps) error {
 		return err
 	}
 	if _, err := os.Stat(s.SecretsPath()); err != nil {
-		return fmt.Errorf("stack has not been applied yet (run `hli apply -f %s`)", file)
+		return fmt.Errorf("stack has not been applied yet (run `macka apply -f %s`)", file)
 	}
 	sec, err := stack.LoadOrCreateSecrets(s)
 	if err != nil {

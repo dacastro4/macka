@@ -9,8 +9,8 @@ import (
 	"sync"
 )
 
-// HLIKeyApp is the AppName of the API key HLI creates in Jellyfin.
-const HLIKeyApp = "hli"
+// KeyAppName is the AppName of the API key macka creates in Jellyfin.
+const KeyAppName = "macka"
 
 // Jellyfin talks to Jellyfin (COMPATIBILITY.md: Jellyfin).
 type Jellyfin struct {
@@ -23,13 +23,13 @@ type Jellyfin struct {
 	key string
 }
 
-// NewJellyfin builds a client that signs in as the HLI admin user.
+// NewJellyfin builds a client that signs in as the macka admin user.
 func NewJellyfin(baseURL, deviceID, user, password string) *Jellyfin {
 	return &Jellyfin{base: baseURL, deviceID: deviceID, user: user, password: password}
 }
 
 func (j *Jellyfin) clientHeader() string {
-	return fmt.Sprintf(`MediaBrowser Client="hli", Device="hli", DeviceId=%q, Version="0.1.0"`, j.deviceID)
+	return fmt.Sprintf(`MediaBrowser Client="macka", Device="macka", DeviceId=%q, Version="0.1.0"`, j.deviceID)
 }
 
 func (j *Jellyfin) anon() *client {
@@ -88,7 +88,7 @@ func (j *Jellyfin) CompleteStartup(ctx context.Context, serverName string) error
 }
 
 // ErrBadLogin means the admin credentials were rejected.
-var ErrBadLogin = errors.New("jellyfin rejected the HLI admin credentials")
+var ErrBadLogin = errors.New("jellyfin rejected the macka admin credentials")
 
 // Login returns a session token for the admin user.
 func (j *Jellyfin) Login(ctx context.Context) (string, error) {
@@ -109,7 +109,7 @@ func (j *Jellyfin) Login(ctx context.Context) (string, error) {
 	return out.AccessToken, nil
 }
 
-// FindKey returns the API key with AppName HLIKeyApp, or "".
+// FindKey returns the API key with AppName KeyAppName, or "".
 func (j *Jellyfin) FindKey(ctx context.Context) (string, error) {
 	tok, err := j.Login(ctx)
 	if err != nil {
@@ -125,23 +125,23 @@ func (j *Jellyfin) FindKey(ctx context.Context) (string, error) {
 		return "", err
 	}
 	for _, k := range out.Items {
-		if k.AppName == HLIKeyApp {
+		if k.AppName == KeyAppName {
 			return k.AccessToken, nil
 		}
 	}
 	return "", nil
 }
 
-// CreateKey creates the HLI API key.
+// CreateKey creates the macka API key.
 func (j *Jellyfin) CreateKey(ctx context.Context) error {
 	tok, err := j.Login(ctx)
 	if err != nil {
 		return err
 	}
-	return j.withToken(tok).do(ctx, http.MethodPost, "/Auth/Keys?app="+HLIKeyApp, nil, nil)
+	return j.withToken(tok).do(ctx, http.MethodPost, "/Auth/Keys?app="+KeyAppName, nil, nil)
 }
 
-// Key returns the HLI API key, cached after the first successful lookup.
+// Key returns the macka API key, cached after the first successful lookup.
 func (j *Jellyfin) Key(ctx context.Context) (string, error) {
 	j.mu.Lock()
 	defer j.mu.Unlock()
@@ -153,7 +153,7 @@ func (j *Jellyfin) Key(ctx context.Context) (string, error) {
 		return "", err
 	}
 	if k == "" {
-		return "", errors.New("jellyfin has no HLI API key yet")
+		return "", errors.New("jellyfin has no macka API key yet")
 	}
 	j.key = k
 	return k, nil
@@ -175,7 +175,7 @@ type VirtualFolder struct {
 	Locations      []string `json:"Locations"`
 }
 
-// Libraries lists libraries using the HLI API key.
+// Libraries lists libraries using the macka API key.
 func (j *Jellyfin) Libraries(ctx context.Context) ([]VirtualFolder, error) {
 	c, err := j.keyed(ctx)
 	if err != nil {

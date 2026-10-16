@@ -4,7 +4,7 @@
 The manager SHALL treat `stack.yml` as the only source of truth for the stack. The Compose file and `.env` file SHALL be generated from it and SHALL carry a header stating they are generated and must not be edited.
 
 #### Scenario: Generate from state
-- **WHEN** the user runs `hli apply` with a valid `stack.yml`
+- **WHEN** the user runs `macka apply` with a valid `stack.yml`
 - **THEN** the manager writes `docker-compose.yml` and `.env` derived only from `stack.yml` and pinned image references
 
 #### Scenario: Deterministic generation
@@ -37,7 +37,7 @@ The manager SHALL generate a unique API key per app before first start, store it
 - **THEN** its API accepts the key the manager generated
 
 #### Scenario: Secrets not logged
-- **WHEN** any `hli` command runs
+- **WHEN** any `macka` command runs
 - **THEN** no API key or password appears in stdout, stderr or log files
 
 ### Requirement: Docker project isolation (D-11 groundwork)

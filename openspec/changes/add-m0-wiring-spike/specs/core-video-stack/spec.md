@@ -4,7 +4,7 @@
 The default M0 stack SHALL install Jellyfin, Radarr, Sonarr and Prowlarr, each bound to the LAN or localhost only.
 
 #### Scenario: Stack comes up
-- **WHEN** `hli apply` runs on a fresh Debian 12 VM with Docker Engine
+- **WHEN** `macka apply` runs on a fresh Debian 12 VM with Docker Engine
 - **THEN** all four containers run and each app's API responds healthy
 
 ### Requirement: Indexer manager sync
@@ -43,5 +43,5 @@ Radarr and Sonarr SHALL notify Jellyfin to refresh its library when they import 
 A fresh Debian VM SHALL reach a fully wired stack, and a second run SHALL change nothing.
 
 #### Scenario: Gate test
-- **WHEN** CI provisions a clean Debian 12 VM, runs `hli apply`, then runs `hli apply` again
+- **WHEN** CI provisions a clean Debian 12 VM, runs `macka apply`, then runs `macka apply` again
 - **THEN** the first run reports every link in this spec as connected, and the second run reports all steps `already-satisfied` with no container recreated

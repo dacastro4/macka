@@ -13,9 +13,9 @@ import (
 	"strings"
 	"testing"
 
-	"hli/internal/compat"
-	"hli/internal/redact"
-	"hli/internal/stack"
+	"github.com/dacastro4/macka/internal/compat"
+	"github.com/dacastro4/macka/internal/redact"
+	"github.com/dacastro4/macka/internal/stack"
 )
 
 type fakeCompose struct {
@@ -27,7 +27,7 @@ func (f *fakeCompose) Projects(context.Context) ([]stack.Project, error) { retur
 func (f *fakeCompose) Up(context.Context, *stack.State) error            { f.ups++; return nil }
 
 const stackYML = `version: 1
-project: hli
+project: macka
 timezone: Etc/UTC
 bindAddress: 127.0.0.1
 paths: {data: ./data}
@@ -125,7 +125,7 @@ func TestT2_ApplyInvalidStateChangesNothing(t *testing.T) {
 
 func TestD11_ApplyRefusesCollisionWithoutChanges(t *testing.T) {
 	path := writeStack(t)
-	fc := &fakeCompose{projects: []stack.Project{{Name: "hli", ConfigFiles: []string{"/elsewhere/docker-compose.yml"}}}}
+	fc := &fakeCompose{projects: []stack.Project{{Name: "macka", ConfigFiles: []string{"/elsewhere/docker-compose.yml"}}}}
 	d, out := newDeps(fc, compat.Default)
 	if code := run(context.Background(), []string{"apply", "-f", path}, d); code != 1 {
 		t.Fatalf("exit %d", code)

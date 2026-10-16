@@ -10,11 +10,11 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	"hli/internal/compat"
+	"github.com/dacastro4/macka/internal/compat"
 )
 
 const validYAML = `version: 1
-project: hli
+project: macka
 timezone: Etc/UTC
 bindAddress: 127.0.0.1
 paths:
@@ -38,7 +38,7 @@ func TestT2_InvalidStateRejected(t *testing.T) {
 		field string
 	}{
 		"wrong version":     {func(s string) string { return strings.Replace(s, "version: 1", "version: 2", 1) }, "version"},
-		"bad project":       {func(s string) string { return strings.Replace(s, "project: hli", "project: Bad Name", 1) }, "project"},
+		"bad project":       {func(s string) string { return strings.Replace(s, "project: macka", "project: Bad Name", 1) }, "project"},
 		"public bind":       {func(s string) string { return strings.Replace(s, "127.0.0.1", "0.0.0.0", 1) }, "bindAddress"},
 		"internet bind":     {func(s string) string { return strings.Replace(s, "127.0.0.1", "8.8.8.8", 1) }, "bindAddress"},
 		"unknown app":       {func(s string) string { return strings.Replace(s, "jellyfin]", "plex]", 1) }, "apps"},
@@ -106,7 +106,7 @@ func TestT2_GeneratedComposeIsPinnedAndLocal(t *testing.T) {
 	if err := yaml.Unmarshal(g.Compose, &cf); err != nil {
 		t.Fatalf("generated compose is not valid YAML: %v", err)
 	}
-	if cf.Name != "hli" {
+	if cf.Name != "macka" {
 		t.Fatalf("project name %q", cf.Name)
 	}
 	for app, svc := range cf.Services {
@@ -273,15 +273,15 @@ func TestT5_KeyDriftRefusedWithoutLeakingKey(t *testing.T) {
 
 func TestD11_ProjectNameCollisionRefused(t *testing.T) {
 	existing := []Project{
-		{Name: "hli", ConfigFiles: []string{"/home/a/stack-one/docker-compose.yml"}},
+		{Name: "macka", ConfigFiles: []string{"/home/a/stack-one/docker-compose.yml"}},
 		{Name: "other", ConfigFiles: []string{"/x/docker-compose.yml"}},
 	}
-	err := GuardProject(existing, "hli", "/home/a/stack-two/docker-compose.yml")
+	err := GuardProject(existing, "macka", "/home/a/stack-two/docker-compose.yml")
 	var pe *ProjectCollisionError
 	if !errors.As(err, &pe) {
 		t.Fatalf("want ProjectCollisionError, got %v", err)
 	}
-	if err := GuardProject(existing, "hli", "/home/a/stack-one/docker-compose.yml"); err != nil {
+	if err := GuardProject(existing, "macka", "/home/a/stack-one/docker-compose.yml"); err != nil {
 		t.Fatalf("same stack dir must be allowed: %v", err)
 	}
 	if err := GuardProject(existing, "fresh", "/home/a/stack-two/docker-compose.yml"); err != nil {

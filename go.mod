@@ -1,4 +1,4 @@
-module hli
+module github.com/dacastro4/macka
 
 go 1.27.2
 

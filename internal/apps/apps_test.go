@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"hli/internal/compat"
-	"hli/internal/stack"
-	"hli/internal/wiring"
+	"github.com/dacastro4/macka/internal/compat"
+	"github.com/dacastro4/macka/internal/stack"
+	"github.com/dacastro4/macka/internal/wiring"
 )
 
 func TestT6_PayloadFromSchema(t *testing.T) {
@@ -97,7 +97,7 @@ func newRig(t *testing.T) *rig {
 	}
 	r.pins = pins
 	st, err := stack.Parse([]byte(`version: 1
-project: hli
+project: macka
 timezone: Etc/UTC
 bindAddress: 127.0.0.1
 paths: {data: ./data}
@@ -135,7 +135,7 @@ func TestCoreVideoStackWiresAllLinks(t *testing.T) {
 		"Prowlarr to Radarr: connected",
 		"Prowlarr to Sonarr: connected",
 		"Jellyfin admin account: connected",
-		"Jellyfin API key for HLI: connected",
+		"Jellyfin API key for macka: connected",
 		"Jellyfin Movies library: connected",
 		"Jellyfin Shows library: connected",
 		"Radarr to Jellyfin (library refresh): connected",

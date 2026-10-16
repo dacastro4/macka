@@ -1,6 +1,6 @@
 ## 1. Repository bootstrap
 
-- [x] 1.1 `git init`; Go module; CC-7 layout (`cmd/hli`, `internal/{wiring,manifests,platform,backup,health}`, `web/`, `manifests/`, `images/`, `docs/`, `test/`)
+- [x] 1.1 `git init`; Go module; CC-7 layout (`cmd/macka`, `internal/{wiring,manifests,platform,backup,health}`, `web/`, `manifests/`, `images/`, `docs/`, `test/`)
 - [x] 1.2 Root `CLAUDE.md` with conventions, build/test commands and the never-guess rule (CC-1)
 - [x] 1.3 `docs/COMPATIBILITY.md` table: component, image tag, digest, API endpoints used, verified date, verified how
 - [x] 1.4 CI skeleton: lint, unit tests, test-name check that every spec requirement ID has a test (CC-2)
@@ -39,11 +39,11 @@
 
 ## 6. CLI
 
-- [x] 6.1 `hli apply`: validate → generate → `docker compose up -d` → wire → report
-- [x] 6.2 `hli status`: run every `check` read-only and print link states
+- [x] 6.1 `macka apply`: validate → generate → `docker compose up -d` → wire → report
+- [x] 6.2 `macka status`: run every `check` read-only and print link states
 
 ## 7. Gate (M0)
 
 - [x] 7.1 Contract tests against real pinned containers (CC-3)
-- [ ] 7.2 CI job: clean Debian 12 VM, `hli apply` twice; assert all links connected, then all `already-satisfied`, no container recreated (`TestP4_SecondRunNoop`)
+- [ ] 7.2 CI job: clean Debian 12 VM, `macka apply` twice; assert all links connected, then all `already-satisfied`, no container recreated (`TestP4_SecondRunNoop`)
 - [x] 7.3 Record gate result and any new open questions in the requirements doc

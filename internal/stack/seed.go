@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 )
 
-// KeyDriftError means an app's config.xml holds a key HLI did not generate.
+// KeyDriftError means an app's config.xml holds a key macka did not generate.
 // The key value is never included in the message (X-10).
 type KeyDriftError struct{ App string }
 
 func (e *KeyDriftError) Error() string {
-	return fmt.Sprintf("%s config.xml has an API key that differs from the HLI secret; refusing to overwrite (drift)", e.App)
+	return fmt.Sprintf("%s config.xml has an API key that differs from the macka secret; refusing to overwrite (drift)", e.App)
 }
 
 type servarrConfig struct {

@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  Home Library Installer (HLI, working name): free, open-source installer and
+  macka: free, open-source installer and
   control panel that gives a non-technical person a complete home digital
   library (movies, TV, music, ebooks, audiobooks) on their own PC or in a VM,
   without opening a terminal.

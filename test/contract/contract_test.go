@@ -1,9 +1,9 @@
 //go:build contract
 
-// Package contract runs hli against real pinned containers (CC-3). It needs a
+// Package contract runs macka against real pinned containers (CC-3). It needs a
 // Linux host with Docker and nothing else bound to the app ports.
 //
-//	HLI_BIN=/path/to/hli go test -tags contract ./test/contract
+//	MACKA_BIN=/path/to/macka go test -tags contract ./test/contract
 package contract
 
 import (
@@ -34,18 +34,18 @@ type env struct {
 
 func setup(t *testing.T) env {
 	t.Helper()
-	bin := os.Getenv("HLI_BIN")
+	bin := os.Getenv("MACKA_BIN")
 	if bin == "" {
-		t.Skip("HLI_BIN not set")
+		t.Skip("MACKA_BIN not set")
 	}
 	dir := t.TempDir()
-	project := fmt.Sprintf("hlict%d", time.Now().Unix())
+	project := fmt.Sprintf("mackact%d", time.Now().Unix())
 	if err := os.WriteFile(filepath.Join(dir, "stack.yml"), []byte(fmt.Sprintf(stackYML, project)), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	e := env{bin: bin, dir: dir, project: project}
 	t.Cleanup(func() {
-		if os.Getenv("HLI_KEEP") != "" {
+		if os.Getenv("MACKA_KEEP") != "" {
 			return
 		}
 		cmd := exec.Command("docker", "compose", "-p", project, "down", "-v")
@@ -58,7 +58,7 @@ func setup(t *testing.T) env {
 	return e
 }
 
-func (e env) hli(t *testing.T, args ...string) (string, int) {
+func (e env) macka(t *testing.T, args ...string) (string, int) {
 	t.Helper()
 	cmd := exec.Command(e.bin, append(args, "-f", filepath.Join(e.dir, "stack.yml"))...)
 	var out bytes.Buffer
@@ -103,7 +103,7 @@ var links = []string{
 	"Prowlarr to Radarr",
 	"Prowlarr to Sonarr",
 	"Jellyfin admin account",
-	"Jellyfin API key for HLI",
+	"Jellyfin API key for macka",
 	"Jellyfin Movies library",
 	"Jellyfin Shows library",
 	"Radarr to Jellyfin (library refresh)",
@@ -115,7 +115,7 @@ var links = []string{
 func TestP4_GateTwoRuns(t *testing.T) {
 	e := setup(t)
 
-	out, code := e.hli(t, "apply")
+	out, code := e.macka(t, "apply")
 	t.Logf("first run:\n%s", out)
 	if code != 0 {
 		t.Fatalf("first apply exit %d", code)
@@ -130,7 +130,7 @@ func TestP4_GateTwoRuns(t *testing.T) {
 	}
 	before := e.containers(t)
 
-	out, code = e.hli(t, "apply")
+	out, code = e.macka(t, "apply")
 	t.Logf("second run:\n%s", out)
 	if code != 0 {
 		t.Fatalf("second apply exit %d", code)
@@ -142,7 +142,7 @@ func TestP4_GateTwoRuns(t *testing.T) {
 		t.Errorf("containers recreated:\nbefore:\n%s\nafter:\n%s", before, after)
 	}
 
-	out, code = e.hli(t, "status")
+	out, code = e.macka(t, "status")
 	if code != 0 || !strings.Contains(out, "10 already satisfied") {
 		t.Errorf("status after apply: exit %d\n%s", code, out)
 	}
@@ -162,7 +162,7 @@ func checkCredentials(t *testing.T, e env) {
 			t.Errorf("%s with generated key: HTTP %d", app, code)
 		}
 	}
-	auth := map[string]string{"Authorization": `MediaBrowser Client="hli-contract", Device="ct", DeviceId="ct", Version="0"`}
+	auth := map[string]string{"Authorization": `MediaBrowser Client="macka-contract", Device="ct", DeviceId="ct", Version="0"`}
 	login := "http://127.0.0.1:8096/Users/AuthenticateByName"
 	for _, pw := range []string{"", "admin", "password"} {
 		body := fmt.Sprintf(`{"Username":"admin","Pw":%q}`, pw)

@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"time"
 
-	"hli/internal/compat"
-	"hli/internal/stack"
-	"hli/internal/wiring"
+	"github.com/dacastro4/macka/internal/compat"
+	"github.com/dacastro4/macka/internal/stack"
+	"github.com/dacastro4/macka/internal/wiring"
 )
 
-// ReadyTimeout bounds how long HLI waits for each app's API.
+// ReadyTimeout bounds how long macka waits for each app's API.
 const ReadyTimeout = 3 * time.Minute
 
 // Plan is the wiring for one stack.

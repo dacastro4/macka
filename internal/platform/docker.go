@@ -10,7 +10,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"hli/internal/stack"
+	"github.com/dacastro4/macka/internal/stack"
 )
 
 // Compose drives the `docker compose` CLI. Only JSON output is parsed.

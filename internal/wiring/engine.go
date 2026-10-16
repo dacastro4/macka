@@ -102,7 +102,7 @@ func (r Report) Lines() []string {
 		case AlreadySatisfied, Applied:
 			out = append(out, res.Label+": connected")
 		case DriftFound:
-			out = append(out, res.Label+": changed outside HLI, not overwritten ("+res.Detail+")")
+			out = append(out, res.Label+": changed outside macka, not overwritten ("+res.Detail+")")
 		case Blocked:
 			out = append(out, res.Label+": not attempted ("+res.Detail+")")
 		default:
@@ -118,7 +118,7 @@ type ReadyFunc func(ctx context.Context, app string) error
 // Engine runs steps.
 type Engine struct {
 	Ready ReadyFunc
-	// ReadOnly runs Check and Verify only, never Apply (for `hli status`).
+	// ReadOnly runs Check and Verify only, never Apply (for `macka status`).
 	ReadOnly bool
 }
 

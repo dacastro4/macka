@@ -19,14 +19,14 @@ The engine SHALL report a link as existing only after `verify` reads it back fro
 - **THEN** the step fails with the step ID, target app and what was expected
 
 #### Scenario: Final report
-- **WHEN** `hli apply` finishes
+- **WHEN** `macka apply` finishes
 - **THEN** it prints one line per link, e.g. `Prowlarr to Radarr: connected`, and exits non-zero if any step failed
 
 ### Requirement: Idempotent runs (P-4)
 Running the full wiring twice SHALL change nothing on the second run.
 
 #### Scenario: Second run is a no-op
-- **WHEN** `hli apply` runs on a stack it already wired
+- **WHEN** `macka apply` runs on a stack it already wired
 - **THEN** every step reports `already-satisfied`, no `apply` runs, and no container is recreated or restarted
 
 #### Scenario: Drift detected

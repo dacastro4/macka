@@ -1,4 +1,4 @@
-# Home Library Installer (HLI, working name)
+# macka
 
 Installer and control panel that gives a non-technical person a complete, wired
 home media library. Requirements: "Home Library Installer: Requirements v0.1"
@@ -29,7 +29,7 @@ Verify it against upstream docs or a running container, record it in
 ## Layout
 
 ```
-cmd/hli/            CLI entry point
+cmd/macka/          CLI entry point
 internal/stack/     stack.yml schema, Compose/.env generation, secrets
 internal/compat/    pinned images and verified upstream facts (mirrors docs/COMPATIBILITY.md)
 internal/wiring/    step engine (check/apply/verify, ordering, report)
@@ -41,8 +41,8 @@ docs/               COMPATIBILITY.md and other docs
 ## Commands
 
 ```bash
-make build        # bin/hli for this machine
-make build-linux  # bin/hli-linux-<arch> for the Debian VM
+make build        # bin/macka for this machine
+make build-linux  # bin/macka-linux-<arch> for the Debian VM
 make test         # unit tests
 make lint         # gofmt + go vet
 make reqcheck     # every spec requirement ID has a test (CC-2)

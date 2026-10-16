@@ -1,6 +1,6 @@
 # Compatibility record
 
-Every image, endpoint, config key and payload shape HLI depends on, and how it
+Every image, endpoint, config key and payload shape macka depends on, and how it
 was verified (CC-1). Anything not in this file is unverified: mark it
 `TODO(verify)` in code. `internal/compat` mirrors the pinned images below; keep
 them in sync.
@@ -28,7 +28,7 @@ Digests are multi-arch index digests (linux/amd64 + linux/arm64 confirmed with
 | Config path | All four use `/config` | Containers started with `/config` bind mounts |
 | User (linuxserver images) | `PUID`, `PGID` env vars | Started with VM user's uid/gid; files owned correctly |
 | User (Jellyfin official) | Compose `user: "<uid>:<gid>"` | With a uid that does not own `/config`, Jellyfin crashes: `Access to the path '/config/log' is denied` |
-| UID must match data owner | The VM user was uid 502, not 1000; HLI must detect the owning uid/gid, never assume 1000 | Observed failure above |
+| UID must match data owner | The VM user was uid 502, not 1000; macka must detect the owning uid/gid, never assume 1000 | Observed failure above |
 | Cache path | Jellyfin `/cache` | Mounted, started cleanly |
 
 ## Radarr, Sonarr, Prowlarr (Servarr)
@@ -63,7 +63,7 @@ every supported `on*Delete*` flag (`supportsOn<Event>` true). Radarr:
 ## Jellyfin
 
 OpenAPI served at `GET /api-docs/openapi.json` (200). Auth header
-`Authorization: MediaBrowser Client="hli", Device="hli", DeviceId="<id>", Version="<v>"`,
+`Authorization: MediaBrowser Client="macka", Device="macka", DeviceId="<id>", Version="<v>"`,
 plus `, Token="<token>"` once authenticated. An API key works as
 `Authorization: MediaBrowser Token="<key>"`.
 
@@ -76,6 +76,6 @@ plus `, Token="<token>"` once authenticated. An API key works as
 | Remote access | `POST /Startup/RemoteAccess` `StartupRemoteAccessDto{EnableRemoteAccess}` → 204; send `false` (R-1) | curl |
 | Complete | `POST /Startup/Complete` → 204; public info then shows `StartupWizardCompleted:true` | curl |
 | Login | `POST /Users/AuthenticateByName` `{Username,Pw}` → `AccessToken` (32 chars); wrong/empty password → 401 | curl |
-| API key | `POST /Auth/Keys?app=hli` (elevated) → 204, no body; `GET /Auth/Keys` → `Items[]` of `AuthenticationInfo{AccessToken,AppName,…}`; find by `AppName` | curl |
+| API key | `POST /Auth/Keys?app=macka` (elevated) → 204, no body; `GET /Auth/Keys` → `Items[]` of `AuthenticationInfo{AccessToken,AppName,…}`; find by `AppName` | curl |
 | Libraries | `POST /Library/VirtualFolders?name=Movies&collectionType=movies&paths=/data/media/movies&refreshLibrary=false` body `{"LibraryOptions":{}}` → 204; `GET /Library/VirtualFolders` → `[{Name,CollectionType,Locations}]` | curl, with API key |
 | Collection types | `movies`, `tvshows`, `music`, `musicvideos`, `homevideos`, `boxsets`, `books`, `mixed` | OpenAPI `CollectionTypeOptions` |

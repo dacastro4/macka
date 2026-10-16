@@ -3,13 +3,13 @@
 # stack and a second run changes nothing. Creates a throwaway Lima VM, runs the
 # contract test in it, then deletes the VM. KEEP=1 keeps the VM for debugging.
 #
-#   test/gate/run-m0-gate.sh bin/hli-linux-<arch> bin/contract-linux-<arch>.test
+#   test/gate/run-m0-gate.sh bin/macka-linux-<arch> bin/contract-linux-<arch>.test
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-hli_bin=${1:?usage: run-m0-gate.sh <hli linux binary> <contract test binary>}
-ct_bin=${2:?usage: run-m0-gate.sh <hli linux binary> <contract test binary>}
-vm="hli-gate-$(date +%s)"
+macka_bin=${1:?usage: run-m0-gate.sh <macka linux binary> <contract test binary>}
+ct_bin=${2:?usage: run-m0-gate.sh <macka linux binary> <contract test binary>}
+vm="macka-gate-$(date +%s)"
 log="test/gate/last-run.log"
 
 cleanup() {
@@ -29,14 +29,14 @@ echo "gate: installing Docker Engine"
 limactl copy test/gate/install-docker.sh "$vm":/tmp/install-docker.sh
 limactl shell "$vm" bash /tmp/install-docker.sh
 
-limactl copy "$hli_bin" "$vm":/tmp/hli
+limactl copy "$macka_bin" "$vm":/tmp/macka
 limactl copy "$ct_bin" "$vm":/tmp/contract.test
-limactl shell "$vm" chmod +x /tmp/hli /tmp/contract.test
+limactl shell "$vm" chmod +x /tmp/macka /tmp/contract.test
 
-echo "gate: running contract test (two hli apply runs)"
+echo "gate: running contract test (two macka apply runs)"
 start=$(date +%s)
 set +e
-limactl shell "$vm" sg docker -c "cd /tmp && HLI_BIN=/tmp/hli ./contract.test -test.v -test.timeout 30m" | tee "$log"
+limactl shell "$vm" sg docker -c "cd /tmp && MACKA_BIN=/tmp/macka ./contract.test -test.v -test.timeout 30m" | tee "$log"
 rc=${PIPESTATUS[0]}
 set -e
 echo "gate: finished in $(( $(date +%s) - start ))s, exit $rc (log: $log)"

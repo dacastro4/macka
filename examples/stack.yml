@@ -1,7 +1,7 @@
-# Example HLI stack for M0 (core video stack). Copy next to where the stack
-# should live, then run: hli apply -f stack.yml
+# Example macka stack for M0 (core video stack). Copy next to where the stack
+# should live, then run: macka apply -f stack.yml
 version: 1
-project: hli
+project: macka
 timezone: Etc/UTC
 # Loopback or a private LAN IP. Never 0.0.0.0 (X-3).
 bindAddress: 127.0.0.1

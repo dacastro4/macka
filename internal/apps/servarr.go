@@ -88,7 +88,7 @@ func FieldValue(rec Record, name string) (any, bool) {
 
 // FromSchema builds a create payload from the app's own template (T-6): it
 // copies the template for implementation, sets name, fills named fields and
-// top-level flags. A field or flag the template lacks is an error, so HLI
+// top-level flags. A field or flag the template lacks is an error, so macka
 // never invents payload keys.
 func FromSchema(schema []Record, implementation, name string, fields, flags map[string]any) (Record, error) {
 	var tmpl Record
