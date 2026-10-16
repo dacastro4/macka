@@ -106,7 +106,8 @@ func (r Report) Lines() []string {
 		case Blocked:
 			out = append(out, res.Label+": not attempted ("+res.Detail+")")
 		default:
-			out = append(out, res.Label+": FAILED ("+res.Detail+")")
+			// P-3: a failure names the step ID as well as the link and cause.
+			out = append(out, res.Label+": FAILED ("+res.Detail+") [step "+res.StepID+"]")
 		}
 	}
 	return out

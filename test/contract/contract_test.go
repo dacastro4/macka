@@ -75,7 +75,14 @@ func (e env) macka(t *testing.T, args ...string) (string, int) {
 
 func (e env) containers(t *testing.T) string {
 	t.Helper()
-	out, err := exec.Command("docker", "compose", "-p", e.project, "ps", "-a", "--format", "{{.ID}} {{.Service}} {{.CreatedAt}} {{.State}}").Output()
+	ids, err := exec.Command("docker", "compose", "-p", e.project, "ps", "-aq").Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// StartedAt and RestartCount catch a restart; Id and Created catch a recreate (P-4).
+	args := append([]string{"inspect", "-f", "{{.Id}} {{.Name}} {{.Created}} {{.State.StartedAt}} {{.RestartCount}}"},
+		strings.Fields(string(ids))...)
+	out, err := exec.Command("docker", args...).Output()
 	if err != nil {
 		t.Fatal(err)
 	}

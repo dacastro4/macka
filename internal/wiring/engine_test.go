@@ -110,8 +110,9 @@ func TestP3_ApplyWithoutVerifyFails(t *testing.T) {
 	if rep.OK() {
 		t.Fatal("report must not be OK")
 	}
-	if line := rep.Lines()[0]; !strings.HasPrefix(line, "Prowlarr to Radarr: FAILED") {
-		t.Fatalf("line %q", line)
+	line := rep.Lines()[0]
+	if !strings.HasPrefix(line, "Prowlarr to Radarr: FAILED") || !strings.Contains(line, "[step prowlarr->radarr]") {
+		t.Fatalf("failure line must name the link and the step ID: %q", line)
 	}
 }
 
